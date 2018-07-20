@@ -11,9 +11,11 @@ class LinkedList:
         self._head = None
         self.length = 0
 
+    # 判断是否为空
     def isEmpty(self):
         return self.length == 0
 
+    # 在链表尾部增加节点
     def append(self, item):
 
         if isinstance(item, ListNode):
@@ -31,16 +33,17 @@ class LinkedList:
         self.length += 1
 
     # 以节点删除
-    def delete(self, node):
+    def deleteByNode(self, node):
         """
         :type node: ListNode
         :rtype: void Do not return anything, modify node in-place instead.
         """
         node.val = node.next.val
         node.next = node.next.next
+        self.length -= 1
 
     # 以索引删除
-    def deleteindex(self, index):
+    def deleteByIndex(self, index):
 
         if self.isEmpty():
             print('this chain table is empty')
@@ -63,20 +66,20 @@ class LinkedList:
 
         self.length -= 1
 
+    # 删除链表的倒数第 n 个节点，并且返回链表的头结点
     def removeNthFromEnd(self, head, n):
         """
         :type head: ListNode
         :type n: int
         :rtype: ListNode
         """
-        List = []
         count = 0
         node = head
         while (node):
             node = node.next
             count = count + 1
 
-        if count ==1:
+        if count == 1:
             return None
 
         node = head
@@ -92,6 +95,45 @@ class LinkedList:
         elif n == 1:
             node.next = None
 
+        self.length -= 1
+
+        return head
+
+    def reverseList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        temp = head
+        lastTemp = None
+        while temp:
+            nextTemp = temp.next
+            temp.next = lastTemp
+            lastTemp = temp
+            temp = nextTemp
+        self._head = lastTemp
+        return lastTemp
+
+    def reverseListRecursion(self, head):
+        "递归解法"
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+
+        if head is None:
+            return
+        if head.next is None:
+            return head
+
+        newHead = chain.reverseListRecursion(head.next)
+        head.next.next = head
+        head.next = None
+        self._head = newHead
+        return newHead
+
+
+
 
     def __repr__(self):
         if self.isEmpty():
@@ -106,11 +148,12 @@ class LinkedList:
 
 if __name__ == '__main__':
     chain = LinkedList()
-    A = ListNode(1)
-    B = ListNode(2)
-    C = ListNode(3)
-    D = ListNode(4)
-    E = ListNode(5)
+    A = ListNode('1')
+    B = ListNode('2')
+    C = ListNode('3')
+    D = ListNode('4')
+    E = ListNode('5')
+    N = ListNode(None)
     # F = ListNode('F')
     # G = ListNode('G')
 
@@ -123,5 +166,6 @@ if __name__ == '__main__':
     # chain.append(G)
    # chain.delete(G)
    #  print(chain)
-    chain.removeNthFromEnd(A, 2)
+    chain.reverseListRecursion(A)
+    # chain.removeNthFromEnd(A, 2)
     print(chain)
