@@ -99,6 +99,7 @@ class LinkedList:
 
         return head
 
+    # 翻转单链表
     def reverseList(self, head):
         """
         :type head: ListNode
@@ -114,6 +115,7 @@ class LinkedList:
         self._head = lastTemp
         return lastTemp
 
+    # 翻转单链表
     def reverseListRecursion(self, head):
         "递归解法"
         """
@@ -126,14 +128,11 @@ class LinkedList:
         if head.next is None:
             return head
 
-        newHead = chain.reverseListRecursion(head.next)
+        newHead = self.reverseListRecursion(head.next)
         head.next.next = head
         head.next = None
         self._head = newHead
         return newHead
-
-
-
 
     def __repr__(self):
         if self.isEmpty():
@@ -146,26 +145,64 @@ class LinkedList:
             node = node.next
         return nlist
 
-if __name__ == '__main__':
-    chain = LinkedList()
-    A = ListNode('1')
-    B = ListNode('2')
-    C = ListNode('3')
-    D = ListNode('4')
-    E = ListNode('5')
-    N = ListNode(None)
-    # F = ListNode('F')
-    # G = ListNode('G')
+class Solution:
+    def mergeTwoLists(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        if l1 is None:
+            return l2
+        if l2 is None:
+            return l1
 
-    chain.append(A)
-    chain.append(B)
-    chain.append(C)
-    chain.append(D)
-    chain.append(E)
-    # chain.append(F)
-    # chain.append(G)
-   # chain.delete(G)
-   #  print(chain)
-    chain.reverseListRecursion(A)
-    # chain.removeNthFromEnd(A, 2)
-    print(chain)
+        temp1 = l1 if l1.val<l2.val else l2
+        temp2 = l2 if l1.val<l2.val else l1
+
+        while temp2:
+            if temp1.next is None:
+                temp1.next = temp2
+                break
+            elif temp1.next.val < temp2.val:
+                temp1 = temp1.next
+            else:
+                temp1Next = temp1.next
+                temp2Insert = ListNode(temp2.val)
+                temp1.next = temp2Insert
+                temp2Insert.next = temp1Next
+                temp1 = temp1.next
+                temp2 = temp2.next
+        return l1 if l1.val < l2.val else l2
+
+
+if __name__ == '__main__':
+    s1 = Solution()
+    chain1 = LinkedList()
+    chain2 = LinkedList()
+    A = ListNode(1)
+    B = ListNode(3)
+    C = ListNode(5)
+    D = ListNode(7)
+    E = ListNode(9)
+
+    chain1.append(A)
+    chain1.append(B)
+    chain1.append(C)
+    chain1.append(D)
+    chain1.append(E)
+
+    A1 = ListNode(2)
+    B1 = ListNode(4)
+    C1 = ListNode(6)
+    D1 = ListNode(8)
+    E1 = ListNode(10)
+
+    chain2.append(A1)
+    chain2.append(B1)
+    chain2.append(C1)
+    chain2.append(D1)
+    chain2.append(E1)
+
+
+    print(s1.mergeTwoLists(A, A1))
