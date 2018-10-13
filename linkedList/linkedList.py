@@ -141,7 +141,7 @@ class LinkedList:
         nlist = ""
         node = self._head
         while node:
-            nlist += node.val
+            nlist += str(node.val) + ','
             node = node.next
         return nlist
 
@@ -164,7 +164,7 @@ class Solution:
             if temp1.next is None:
                 temp1.next = temp2
                 break
-            elif temp1.next.val < temp2.val:
+            elif temp1.next.val <   temp2.val:
                 temp1 = temp1.next
             else:
                 temp1Next = temp1.next
@@ -175,22 +175,70 @@ class Solution:
                 temp2 = temp2.next
         return l1 if l1.val < l2.val else l2
 
+    def isPalindrome(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        length = 0
+        cursor =nextCursor = head
+        lastCursor = None
+        while cursor:
+            cursor = cursor.next
+            length += 1
+
+        cursor = head
+        for i in range(int(length/2)):
+            nextCursor = cursor.next
+            cursor.next = lastCursor
+            lastCursor = cursor
+            cursor = nextCursor
+
+        if length % 2:
+            cursor = cursor.next
+
+        while cursor and lastCursor:
+            if cursor.val != lastCursor.val:
+                return False
+            cursor = cursor.next
+            lastCursor = lastCursor.next
+
+        return True
+
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        slow = head
+        fast = head
+        while slow and fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
+
+
+
+
+
 
 if __name__ == '__main__':
     s1 = Solution()
     chain1 = LinkedList()
     chain2 = LinkedList()
     A = ListNode(1)
-    B = ListNode(3)
-    C = ListNode(5)
-    D = ListNode(7)
-    E = ListNode(9)
+    B = ListNode(2)
+    C = ListNode(3)
+    D = ListNode(2)
+    E = ListNode(1)
 
     chain1.append(A)
     chain1.append(B)
-    chain1.append(C)
-    chain1.append(D)
-    chain1.append(E)
+    # chain1.append(C)
+    # chain1.append(D)
+    # chain1.append(E)
 
     A1 = ListNode(2)
     B1 = ListNode(4)
@@ -204,5 +252,4 @@ if __name__ == '__main__':
     chain2.append(D1)
     chain2.append(E1)
 
-
-    print(s1.mergeTwoLists(A, A1))
+    print(s1.hasCycle(A))
