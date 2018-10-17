@@ -49,10 +49,21 @@ class Tree:
 
         return depthL if depthL>depthR else depthR
 
+    def validBST(self, root, small, large):
+        if root == None:
+            return True
+        if small <= root.val or large>= root.val:
+            return False
+        return self.validBST(root.left, small, root.val) and self.validBST(root.right, root.val, large)
 
+    def isValidBST(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        return self.validBST(root, -2**32,2**32-1)
 
-
-
+    
 
 
 if __name__ =="__main__":
@@ -68,4 +79,5 @@ if __name__ =="__main__":
     tree.add(3)
     tree.add(4)
     tree.add(5)
-    print(tree.maxDepth(tree.root))
+    # print(tree.maxDepth(tree.root))
+    print(tree.isValidBST(tree.root))
