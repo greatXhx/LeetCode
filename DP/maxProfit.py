@@ -65,28 +65,19 @@ class Solution:
                 localMaxProfit[j] = max(globalMaxProfit[j-1] + max(0, profit), localMaxProfit[j]+profit)
                 globalMaxProfit[j] = max(globalMaxProfit[j], localMaxProfit[j])
         return globalMaxProfit[k]
-
-    def maxProfit5(self, prices):
-        """
-        最佳买卖股票时机含冷冻期
-        :type prices: List[int]
-        :rtype: int
-        """
-        if not prices:
-            return 0
-
-        unhold = [0,0,0]
-        hold = -prices[0]
+    def maxProfit6(self, prices, fee):
+        hold = [-prices[0] - fee, 0]
+        unhold = [0, 0]
         for item in prices[1:]:
-            unhold[2] = max(unhold[1], hold+item)
-            hold = max(hold, unhold[0] - item)
-            unhold[0],unhold[1] = unhold[1],unhold[2]
-
-        return unhold[2]
+            hold[1] = max(hold[0], unhold[0] - item - fee)
+            unhold[1] = max(hold[0] + item, unhold[0])
+            hold[0] = hold[1]
+            unhold[0] = unhold[1]
+        return unhold[1]
 
 
 if __name__ == "__main__":
     s = Solution()
-    prices = [4,2,1]
-    # prices = [1243]
-    print(s.maxProfit5(prices))
+    prices = [1,3,2,8,4,9]
+    # prices = [7,1,5,3,6,4]
+    print(s.maxProfit6(prices,2))
